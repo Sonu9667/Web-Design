@@ -1,0 +1,157 @@
+
+
+body{
+    margin: 0px;
+    text-align: center ;
+
+}
+.bird{
+    padding: 100px 0 50px 0;
+    width: 300px;
+    height: 300px;
+}
+.profile{
+    font-family: 'Azeret Mono', monospace;
+    margin: 0px auto 50px auto ;
+    padding: 20px;
+
+}
+.intro{
+    width: 40%;
+    margin: auto;
+    line-height: 2;
+    
+}
+.skl{
+    width: 40%;
+    margin: auto;
+}
+a{
+    color: #119991;
+    margin: 20px 10px;
+}
+h1{ font-size: 5.625rem;
+    color: #119991;
+    margin: auto 0 auto auto;
+    font-family:'Allison', cursive;
+    
+}
+h2{
+
+    color: #119991;
+
+
+}
+h3{
+    color: #119991;
+    
+
+}
+
+h4{ font-size: 2rem;
+    margin-top: 0;
+    font-family: 'Azeret Mono', monospace;
+    color: rgb(30, 15, 236);
+    font-weight: normal;
+    line-height: 1px;
+    
+}
+
+a{
+    color:#18a9ec;
+    text-decoration: none;
+
+}
+a:hover{
+    color: white;
+}
+
+.top-container{
+    margin: 0;
+    background-color: rgb(219, 251, 253);
+    width:100%;
+    padding-top:100px;
+    position: relative;
+    font-family: 'Azeret Mono', monospace;
+    
+}
+
+.middle-container{
+    margin: auto 0 auto 0;
+    background-color: rgba(248, 249, 250, 0.932);
+    font-family: 'Azeret Mono', monospace;
+    padding: 0px 0px 50px 0px;
+
+    
+}
+
+.skill-row{
+    margin: 10px auto 100px auto;
+    width: 50%;
+    text-align: left;
+    line-height: 2;
+    
+}
+
+.bottom-container{
+    
+    background-color:rgb(105, 124, 93);
+    padding: 50px 0 50px 0;
+    
+    
+} 
+
+.top-cloud{
+    position: absolute;
+    right: 300px;
+    top: 50px;
+}
+
+.cloud_bottom{
+    position: absolute;
+    left: 300px;
+    bottom: 350px;
+
+}
+.computer-img{
+    width: 20%;
+    float: left;
+    margin-right: 30px;
+
+}
+
+.giphy-img{
+    width: 25%;
+    float:right;
+    margin-left: 30px;
+}
+
+.contact-me{
+    font-family: 'Azeret Mono', monospace;
+    margin: 0px auto auto auto ;
+
+}
+
+.btn{
+    border-radius: 10px;
+    background-color: rgb(10, 223, 28);
+    line-height: 0;
+    color: #1714e7;
+    font-family: Verdana;
+    width: 150px;
+    padding: 20px;
+    text-shadow: 1px 1px 5px #FFAE00;
+    box-shadow: rgb(30, 15, 236);
+    border: solid #FFAE00 0;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+
+}
+.btn:hover {
+    border: solid #0D772A 1px;
+    background: #ffffff;
+    color: black;
+    border-radius: 10px;
+    text-decoration: none;
+ }
