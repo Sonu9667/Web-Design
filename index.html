@@ -3,66 +3,60 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Sonu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flappy Bird Mini Game</title>
   <link rel="stylesheet" href="CSS/styles.css">
   <link rel="icon" href="favicon.ico">
-  <link href="https://fonts.googleapis.com/css2?family=Allison&family=Roboto&display=swap" rel="stylesheet">
-
-
+  <link href="https://fonts.googleapis.com/css2?family=Allison&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-  <div class="top-container">
-    <img class="top-cloud" src="images/cloud.png" alt="cloud-img">
-    <h1>Hello! , I'm Sonu</h1>
-    <h4>a <span><u>web</u></span> designer</h4>
-    <img class="cloud_bottom" src="images/cloud.png" alt="cloud_img">
-    <img class="bird" src="images/birds.png" alt="bird-img">
-  </div>
-  <div class="middle-container">
+  <main class="page">
+    <header class="hero">
+      <p class="eyebrow">Mini Browser Game</p>
+      <h1>Flappy Bird</h1>
+      <p class="subtitle">Tap or press space to flap. Dodge the pipes and chase a new high score.</p>
+    </header>
 
-    <!-- <hr style="margin:0px;"> -->
-    <div class="profile">
-      <h2>Profile picture</h2>
-      <img src="images/img_sonu.png" alt="sonu_profile_image">
-      <h3>Hello, This is me</h3>
-      <p class="intro">I have also learnt engineering study from the branch electronics and communcaction.</p>
-    </div>
-
-    <div class="skills">
-      <div class="skill-row">
-        <!-- <h2>My Skills</h2> -->
-        <img class="computer-img" src="images/computer.png" alt="computer_img">
-        <h3>Web developer & designer</h3>
-        <p class="skl">I started learnig programming when i was 2nd year of my B-tech engineering and i
-          wanted to make my own video games and design web application </p>
+    <section class="game-shell" aria-label="Flappy Bird game">
+      <div class="hud">
+        <div>
+          <p class="label">Score</p>
+          <p class="value" id="score">0</p>
+        </div>
+        <div>
+          <p class="label">Best</p>
+          <p class="value" id="best">0</p>
+        </div>
+        <button class="btn" id="start-btn" type="button">Start Game</button>
       </div>
 
-      <div class="skill-row">
-        <!-- <h2>Hot wings/Snacks</h2> -->
-        <img class="giphy-img" src="https://media0.giphy.com/media/Xf29jKCNaLLpiP8nGq/giphy.gif?cid=ecf05e47rszl6t6d02c9hbhabow1bbwm0i2e0in
-          zg3jot4yk&rid=giphy.gif&ct=s" alt="gif">
-        <h3>Hot wings challenge</h3>
-        <p>But i also my favourate eating frychicken and snacks with sauces.</p>
+      <div class="canvas-wrap">
+        <canvas id="game" width="360" height="540" aria-label="Flappy Bird play area" role="img"></canvas>
+        <div class="overlay" id="overlay">
+          <p class="overlay-title" id="overlay-title">Ready?</p>
+          <p class="overlay-text" id="overlay-text">Press space, click, or tap to fly.</p>
+        </div>
       </div>
-    </div>
 
-    <div class="contact-me">
-      <h2>Get In Touch</h2>
-      <h3 style="color: darkslategrey;">Follow on social media</h3>
-      <a class="btn" href="mailto:name@email.com">CONTACT ME</a>
-    </div>
-  </div>
+      <div class="tips">
+        <div>
+          <h2>How to Play</h2>
+          <ul>
+            <li>Press <strong>Space</strong> or tap the screen to flap.</li>
+            <li>Stay between the pipes to keep flying.</li>
+            <li>Hit the ground or a pipe to end the run.</li>
+          </ul>
+        </div>
+        <div>
+          <h2>Goal</h2>
+          <p>Keep a steady rhythm and collect the highest score you can before the pipes catch you.</p>
+        </div>
+      </div>
+    </section>
+  </main>
 
-
-  <div class="bottom-container">
-    <a class="footer-link" href="https://www.instagram.com/nishantpandit5638">Instagram</a>
-    <a class="footer-link" href="https://www.linkedin.com/in/sonu-737401213">LinkedIn</a>
-    <a class="footer-link" href="https://twitter.com/Sonu62221959?s=09">Twitter</a>
-
-    <p>© 2021 Sonu </p>
-  </div>
-
+  <script src="script.js"></script>
 </body>
 
 </html>
