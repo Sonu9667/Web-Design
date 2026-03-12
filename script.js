@@ -1,245 +1,117 @@
-const canvas = document.getElementById('game');
-const ctx = canvas.getContext('2d');
-const scoreEl = document.getElementById('score');
-const bestEl = document.getElementById('best');
-const startBtn = document.getElementById('start-btn');
-const overlay = document.getElementById('overlay');
-const overlayTitle = document.getElementById('overlay-title');
-const overlayText = document.getElementById('overlay-text');
+const form = document.getElementById('campaign-form');
+const result = document.getElementById('result');
 
-const game = {
-  width: canvas.width,
-  height: canvas.height,
-  gravity: 0.35,
-  flapStrength: -6.2,
-  pipeGap: 140,
-  pipeWidth: 54,
-  pipeSpeed: 2.6,
-  pipeSpacing: 180,
-  groundHeight: 70,
+const objectiveStrategies = {
+  'Brand Awareness': 'maximize reach with high-frequency top-of-funnel creatives and short-form video',
+  'Lead Generation': 'drive qualified sign-ups with clear forms, lead magnets, and retargeting sequences',
+  'Sales Conversion': 'optimize for purchases using offer-driven creatives, urgency, and cart recovery audiences',
+  'App Installs': 'increase installs with benefit-focused demos, social proof, and app-store optimized CTAs',
 };
 
-let bird;
-let pipes;
-let score;
-let bestScore = 0;
-let frameId;
-let lastPipeX;
-let state = 'idle';
-
-const colors = {
-  skyTop: '#8fd3ff',
-  skyBottom: '#dff5ff',
-  ground: '#f6c65b',
-  groundShadow: '#d99e3c',
-  pipe: '#2ecc71',
-  pipeShadow: '#1e9f57',
-  bird: '#ffb703',
-  birdWing: '#fb8500',
-  beak: '#ff6700',
+const toneExamples = {
+  Professional: ['Trusted by growing teams', 'Built for consistent performance'],
+  Bold: ['Stop scrolling. Start winning.', 'The upgrade your routine deserves'],
+  Friendly: ['Made to make your day easier', 'Simple, smart, and ready for you'],
+  Luxury: ['Crafted for refined expectations', 'Premium quality, unmistakably yours'],
 };
 
-const initBird = () => ({
-  x: 90,
-  y: canvas.height / 2,
-  radius: 14,
-  velocity: 0,
-});
+const formatMoney = (value) =>
+  new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+  }).format(value);
 
-const initGame = () => {
-  bird = initBird();
-  pipes = [];
-  score = 0;
-  lastPipeX = canvas.width;
-  updateScore();
-};
-
-const updateScore = () => {
-  scoreEl.textContent = score.toString();
-  bestEl.textContent = bestScore.toString();
-};
-
-const addPipe = () => {
-  const minGapY = 120;
-  const maxGapY = canvas.height - game.groundHeight - 120;
-  const gapY = Math.random() * (maxGapY - minGapY) + minGapY;
-
-  pipes.push({
-    x: canvas.width,
-    gapY,
-    passed: false,
-  });
-};
-
-const drawBackground = () => {
-  const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-  gradient.addColorStop(0, colors.skyTop);
-  gradient.addColorStop(1, colors.skyBottom);
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  ctx.fillStyle = colors.ground;
-  ctx.fillRect(0, canvas.height - game.groundHeight, canvas.width, game.groundHeight);
-  ctx.fillStyle = colors.groundShadow;
-  ctx.fillRect(0, canvas.height - game.groundHeight, canvas.width, 6);
-};
-
-const drawBird = () => {
-  ctx.save();
-  ctx.translate(bird.x, bird.y);
-  const tilt = Math.max(-0.4, Math.min(0.6, bird.velocity / 10));
-  ctx.rotate(tilt);
-
-  ctx.fillStyle = colors.bird;
-  ctx.beginPath();
-  ctx.arc(0, 0, bird.radius, 0, Math.PI * 2);
-  ctx.fill();
-
-  ctx.fillStyle = colors.birdWing;
-  ctx.beginPath();
-  ctx.ellipse(-4, 2, 6, 4, Math.PI / 4, 0, Math.PI * 2);
-  ctx.fill();
-
-  ctx.fillStyle = colors.beak;
-  ctx.beginPath();
-  ctx.moveTo(bird.radius - 2, -3);
-  ctx.lineTo(bird.radius + 8, 0);
-  ctx.lineTo(bird.radius - 2, 3);
-  ctx.closePath();
-  ctx.fill();
-
-  ctx.fillStyle = '#1d3557';
-  ctx.beginPath();
-  ctx.arc(-4, -4, 2.2, 0, Math.PI * 2);
-  ctx.fill();
-
-  ctx.restore();
-};
-
-const drawPipe = (pipe) => {
-  const topPipeHeight = pipe.gapY - game.pipeGap / 2;
-  const bottomPipeY = pipe.gapY + game.pipeGap / 2;
-  const bottomPipeHeight = canvas.height - game.groundHeight - bottomPipeY;
-
-  ctx.fillStyle = colors.pipe;
-  ctx.fillRect(pipe.x, 0, game.pipeWidth, topPipeHeight);
-  ctx.fillRect(pipe.x, bottomPipeY, game.pipeWidth, bottomPipeHeight);
-
-  ctx.fillStyle = colors.pipeShadow;
-  ctx.fillRect(pipe.x + game.pipeWidth - 6, 0, 6, topPipeHeight);
-  ctx.fillRect(pipe.x + game.pipeWidth - 6, bottomPipeY, 6, bottomPipeHeight);
-};
-
-const updateBird = () => {
-  bird.velocity += game.gravity;
-  bird.y += bird.velocity;
-};
-
-const updatePipes = () => {
-  pipes.forEach((pipe) => {
-    pipe.x -= game.pipeSpeed;
-    if (!pipe.passed && pipe.x + game.pipeWidth < bird.x) {
-      pipe.passed = true;
-      score += 1;
-      updateScore();
-    }
+const distributeBudget = (budget, channels) => {
+  const splits = channels.map((name, index) => {
+    const ratio = index === 0 ? 0.4 : index === 1 ? 0.3 : 0.3 / Math.max(channels.length - 2, 1);
+    return { name, amount: Math.round(budget * ratio) };
   });
 
-  pipes = pipes.filter((pipe) => pipe.x + game.pipeWidth > 0);
-
-  if (canvas.width - lastPipeX >= game.pipeSpacing) {
-    addPipe();
-    lastPipeX = canvas.width;
-  } else {
-    lastPipeX -= game.pipeSpeed;
-  }
-};
-
-const checkCollision = () => {
-  if (bird.y + bird.radius >= canvas.height - game.groundHeight) {
-    return true;
-  }
-  if (bird.y - bird.radius <= 0) {
-    return true;
+  const total = splits.reduce((sum, item) => sum + item.amount, 0);
+  if (splits.length > 0 && total !== budget) {
+    splits[0].amount += budget - total;
   }
 
-  return pipes.some((pipe) => {
-    const inPipeXRange = bird.x + bird.radius > pipe.x && bird.x - bird.radius < pipe.x + game.pipeWidth;
-    if (!inPipeXRange) {
-      return false;
-    }
-    const topPipeHeight = pipe.gapY - game.pipeGap / 2;
-    const bottomPipeY = pipe.gapY + game.pipeGap / 2;
-    const hitTop = bird.y - bird.radius < topPipeHeight;
-    const hitBottom = bird.y + bird.radius > bottomPipeY;
-    return hitTop || hitBottom;
-  });
+  return splits;
 };
 
-const render = () => {
-  drawBackground();
-  pipes.forEach(drawPipe);
-  drawBird();
+const createAdCopies = (product, audience, tone) => {
+  const hooks = toneExamples[tone] || toneExamples.Professional;
+
+  return hooks.map((hook, index) => ({
+    headline: `${product}: ${hook}`,
+    body: `Designed for ${audience}. See why customers choose ${product} to get better results with less hassle.`,
+    cta: index % 2 === 0 ? 'Get Started Today' : 'Learn More',
+  }));
 };
 
-const gameLoop = () => {
-  updateBird();
-  updatePipes();
-  render();
-
-  if (checkCollision()) {
-    endGame();
-    return;
-  }
-
-  frameId = requestAnimationFrame(gameLoop);
-};
-
-const startGame = () => {
-  cancelAnimationFrame(frameId);
-  initGame();
-  state = 'playing';
-  overlay.classList.add('hidden');
-  startBtn.textContent = 'Restart';
-  gameLoop();
-};
-
-const endGame = () => {
-  state = 'over';
-  cancelAnimationFrame(frameId);
-  bestScore = Math.max(bestScore, score);
-  updateScore();
-  overlayTitle.textContent = 'Game Over';
-  overlayText.textContent = 'Click or press space to try again.';
-  overlay.classList.remove('hidden');
-};
-
-const flap = () => {
-  if (state === 'idle') {
-    startGame();
-    return;
-  }
-  if (state === 'over') {
-    startGame();
-    return;
-  }
-  bird.velocity = game.flapStrength;
-};
-
-const handleKey = (event) => {
-  if (event.code === 'Space' || event.code === 'ArrowUp') {
-    event.preventDefault();
-    flap();
-  }
-};
-
-startBtn.addEventListener('click', startGame);
-window.addEventListener('keydown', handleKey);
-canvas.addEventListener('mousedown', flap);
-canvas.addEventListener('touchstart', (event) => {
+form.addEventListener('submit', (event) => {
   event.preventDefault();
-  flap();
-});
 
-initGame();
-render();
+  const product = document.getElementById('product').value.trim();
+  const objective = document.getElementById('objective').value;
+  const audience = document.getElementById('audience').value.trim();
+  const budget = Number(document.getElementById('budget').value);
+  const tone = document.getElementById('tone').value;
+
+  const channels = Array.from(document.querySelectorAll('input[name="channel"]:checked')).map(
+    (checkbox) => checkbox.value,
+  );
+
+  if (!channels.length) {
+    result.innerHTML = '<h2>Generated Campaign</h2><p class="hint">Please choose at least one channel.</p>';
+    return;
+  }
+
+  const strategy = objectiveStrategies[objective] || 'balance awareness and conversion with iterative testing';
+  const budgetPlan = distributeBudget(budget, channels);
+  const copies = createAdCopies(product, audience, tone);
+
+  result.innerHTML = `
+    <h2>Generated Campaign</h2>
+
+    <section class="output-section">
+      <h3>Campaign Strategy</h3>
+      <ul>
+        <li><strong>Objective:</strong> ${objective}</li>
+        <li><strong>Audience:</strong> ${audience}</li>
+        <li><strong>Approach:</strong> ${strategy}</li>
+        <li><strong>Brand Voice:</strong> ${tone}</li>
+      </ul>
+    </section>
+
+    <section class="output-section">
+      <h3>Budget Allocation (${formatMoney(budget)}/month)</h3>
+      <ul>
+        ${budgetPlan.map((item) => `<li>${item.name}: <strong>${formatMoney(item.amount)}</strong></li>`).join('')}
+      </ul>
+    </section>
+
+    <section class="output-section">
+      <h3>AI-Generated Ad Copy Variants</h3>
+      ${copies
+        .map(
+          (copy) => `
+            <article class="ad-copy">
+              <p><strong>Headline:</strong> ${copy.headline}</p>
+              <p><strong>Body:</strong> ${copy.body}</p>
+              <p><strong>CTA:</strong> ${copy.cta}</p>
+            </article>
+          `,
+        )
+        .join('')}
+    </section>
+
+    <section class="output-section">
+      <h3>7-Day Launch Plan</h3>
+      <ol>
+        <li>Day 1: Launch two creative sets per channel with conversion tracking enabled.</li>
+        <li>Day 2-3: Review click-through rate and pause bottom 20% performers.</li>
+        <li>Day 4: Duplicate top ad set and test one new hook + CTA variation.</li>
+        <li>Day 5-6: Shift 15% budget toward best channel and retarget engaged users.</li>
+        <li>Day 7: Export insights and finalize next-week optimization brief.</li>
+      </ol>
+    </section>
+  `;
+});

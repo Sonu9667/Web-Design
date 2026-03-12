@@ -4,55 +4,73 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flappy Bird Mini Game</title>
+  <title>AI Ad Campaign Generator</title>
   <link rel="stylesheet" href="CSS/styles.css">
   <link rel="icon" href="favicon.ico">
-  <link href="https://fonts.googleapis.com/css2?family=Allison&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
   <main class="page">
     <header class="hero">
-      <p class="eyebrow">Mini Browser Game</p>
-      <h1>Flappy Bird</h1>
-      <p class="subtitle">Tap or press space to flap. Dodge the pipes and chase a new high score.</p>
+      <p class="eyebrow">Advertising Tool</p>
+      <h1>AI Ad Campaign Generator</h1>
+      <p class="subtitle">Generate campaign strategy, ad copy, and creative ideas in seconds.</p>
     </header>
 
-    <section class="game-shell" aria-label="Flappy Bird game">
-      <div class="hud">
-        <div>
-          <p class="label">Score</p>
-          <p class="value" id="score">0</p>
-        </div>
-        <div>
-          <p class="label">Best</p>
-          <p class="value" id="best">0</p>
-        </div>
-        <button class="btn" id="start-btn" type="button">Start Game</button>
-      </div>
+    <section class="generator-shell" aria-label="Ad campaign generator">
+      <form id="campaign-form" class="panel form-panel">
+        <h2>Campaign Inputs</h2>
+        <div class="form-grid">
+          <label>Business / Product
+            <input id="product" type="text" placeholder="e.g. FitFuel Protein Bars" required>
+          </label>
 
-      <div class="canvas-wrap">
-        <canvas id="game" width="360" height="540" aria-label="Flappy Bird play area" role="img"></canvas>
-        <div class="overlay" id="overlay">
-          <p class="overlay-title" id="overlay-title">Ready?</p>
-          <p class="overlay-text" id="overlay-text">Press space, click, or tap to fly.</p>
-        </div>
-      </div>
+          <label>Campaign Objective
+            <select id="objective" required>
+              <option value="">Select objective</option>
+              <option value="Brand Awareness">Brand Awareness</option>
+              <option value="Lead Generation">Lead Generation</option>
+              <option value="Sales Conversion">Sales Conversion</option>
+              <option value="App Installs">App Installs</option>
+            </select>
+          </label>
 
-      <div class="tips">
-        <div>
-          <h2>How to Play</h2>
-          <ul>
-            <li>Press <strong>Space</strong> or tap the screen to flap.</li>
-            <li>Stay between the pipes to keep flying.</li>
-            <li>Hit the ground or a pipe to end the run.</li>
-          </ul>
+          <label>Target Audience
+            <input id="audience" type="text" placeholder="e.g. Busy professionals, 25-40" required>
+          </label>
+
+          <label>Monthly Budget (USD)
+            <input id="budget" type="number" min="100" step="50" placeholder="e.g. 3000" required>
+          </label>
+
+          <label>Brand Voice
+            <select id="tone" required>
+              <option value="">Select tone</option>
+              <option value="Professional">Professional</option>
+              <option value="Bold">Bold</option>
+              <option value="Friendly">Friendly</option>
+              <option value="Luxury">Luxury</option>
+            </select>
+          </label>
+
+          <fieldset class="channels">
+            <legend>Channels</legend>
+            <label><input type="checkbox" name="channel" value="Google Search" checked>Google Search</label>
+            <label><input type="checkbox" name="channel" value="Meta Ads" checked>Meta Ads</label>
+            <label><input type="checkbox" name="channel" value="TikTok">TikTok</label>
+            <label><input type="checkbox" name="channel" value="LinkedIn">LinkedIn</label>
+            <label><input type="checkbox" name="channel" value="YouTube">YouTube</label>
+          </fieldset>
         </div>
-        <div>
-          <h2>Goal</h2>
-          <p>Keep a steady rhythm and collect the highest score you can before the pipes catch you.</p>
-        </div>
-      </div>
+
+        <button type="submit" class="btn">Generate Campaign</button>
+      </form>
+
+      <article class="panel output-panel" id="result" aria-live="polite">
+        <h2>Generated Campaign</h2>
+        <p class="hint">Fill in your details and click <strong>Generate Campaign</strong>.</p>
+      </article>
     </section>
   </main>
 
